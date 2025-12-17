@@ -1,11 +1,6 @@
 int size = 500;
+float reducedSize = size * 0.9f;
 int totalSize = 5 * size;
-
-//String testString = "Du hast dir mal wie-der die Hän-de am Kü-chen-was-ser ver-brannt";
-
-//String testString = "Viel zu viel VAPCA Es-sen da";
-
-//String testString = "Du bist nach 00:00 Uhr noch da";
 
 String testString = "Hal-lo, dies ist ein doo-fer Test-string um zu tes-ten wie gut die Wort-tren-nung funk-tio-niert";
 
@@ -16,7 +11,7 @@ void setup() {
   noFill();
   stroke(0);
   strokeWeight(5);
-  rect(100, 100, 500, 500);
+  rect(100, 100, 500, 2000);
 
   fill(0);
   textSize(70);
@@ -33,12 +28,10 @@ String formatText(String in) {
   var first = true;
   var reducedSize = 490;
   for (var word : split) {
-    
     if(textWidth(ret + "XX") >= reducedSize){
       ret += "\n";
       first = true;
     }
-    
     if (!word.contains("-")) {
       if (textWidth(ret + " " + word) >= reducedSize) {
         ret += "\n";
@@ -46,31 +39,27 @@ String formatText(String in) {
       }
       if (!first)
         ret += " ";
-
       ret += word;
       first = false;
     } else {
       if(!first)
         ret += " ";
+      var firstSyllable = true;
       var syllables = split(word, '-');
       for (var syl : syllables) {
         if (textWidth(ret + syl + '-') >= reducedSize) {
-          ret += "-\n";
+          if(!firstSyllable)
+            ret += "-";
+          ret += "\n";
           first = true;
         }
-
         ret += syl;
+        firstSyllable = false;
       }
       first = false;
     }
-
-
-
-
-
     println(ret + "; " + textWidth(ret));
     println("----------------");
   }
-
   return ret;
 }
